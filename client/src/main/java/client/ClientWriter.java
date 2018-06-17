@@ -2,6 +2,7 @@ package client;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Scanner;
@@ -11,22 +12,24 @@ public class ClientWriter extends Thread
     private Socket socket;
     private Client client;
     private ObjectOutputStream ObjectOut;
+    private PrintStream ps;
 
     /**
      * Constructor with nickname initialization
      * @param socket socket
      * @param client client
      */
-    public ClientWriter(Socket socket, Client client) {
+    public ClientWriter(Socket socket, Client client) throws UnsupportedEncodingException {
         this.socket = socket;
         this.client = client;
 
         try {
             ObjectOut = new ObjectOutputStream(socket.getOutputStream());
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8),true);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
             InputStream in = socket.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in,StandardCharsets.UTF_8));
-            Scanner input = new Scanner(System.in,StandardCharsets.UTF_8);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+            Scanner input = new Scanner(System.in,"UTF-8");
+            ps = new PrintStream(System.out, true, "UTF-8");
             String userName;
             while(true){
                 System.out.print("Enter your nickname: ");
@@ -52,21 +55,19 @@ public class ClientWriter extends Thread
      * Method to write messages
      */
     public void run() {
-
-        Scanner input = new Scanner(System.in, StandardCharsets.UTF_8);
+        Scanner input = new Scanner(System.in,"UTF-8");
         String text;
         do {
-            System.out.print("\r[" + client.getUserName() + "]: ");
+            ps.print("\r[" + client.getUserName() + "]: ");
             text = input.nextLine();
             try{
                 if (!text.equals("")){
-                    Message message = new Message(client.getUserName(), text, new Date());
+                    Message message = new Message(client.getUserName(), text);
                     ObjectOut.writeObject(message);
                 }
             } catch (IOException ex){
                 System.out.println("\rChat is closed");
             }
-
         } while ((!text.equals("/exit"))&&(!socket.isClosed()));
         try {
             socket.close();

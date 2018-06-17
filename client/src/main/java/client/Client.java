@@ -15,7 +15,8 @@ public class Client
     public void start() {
         try {
             Socket socket = new Socket(hostName, port);
-            new ClientWriter(socket, this).start();
+            ClientWriter writer = new ClientWriter(socket, this);
+            writer.start();
             new ClientReader(socket, this).start();
         } catch (UnknownHostException ex) {
             System.out.println("Server not found: " + ex.getMessage());

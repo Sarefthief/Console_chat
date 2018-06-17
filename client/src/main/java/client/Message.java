@@ -10,13 +10,19 @@ public class Message implements Serializable{
     private String message;
     private Date date;
 
+
+    public Message(String username, String message){
+        this.message = message;
+        this.username = username;
+    }
+
     public Message(String username, String message, Date date){
         this.message = message;
         this.username = username;
         this.date = date;
     }
 
-    public String getName(){
+    public String getUsername(){
         return username;
     }
 
@@ -31,5 +37,15 @@ public class Message implements Serializable{
     public void setMessage(String message)
     {
         this.message = message;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
     }
 }

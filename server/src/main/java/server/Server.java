@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import client.Message;
 
 public class Server
 {
     private int port;
     private Set<String> userNames = new HashSet<>();
     private Set<ServerUserThread> userThreads = new HashSet<>();
-    private ArrayList<String> messages = new ArrayList<>();
+    private ArrayList<Message> messages = new ArrayList<>();
 
     /**
      * server.server.Server main method
@@ -42,7 +43,7 @@ public class Server
      * @param message string message to broadcast
      * @param excludeUser user who send the message
      */
-    void broadcast(String message, ServerUserThread excludeUser)
+    void broadcast(Message message, ServerUserThread excludeUser)
     {
         messages.add(message);
         for (ServerUserThread user : userThreads) {
@@ -56,7 +57,7 @@ public class Server
      * @param message string message
      * @param receiver string name of receiver
      */
-    void sendPrivate(String message, String receiver)
+    void sendPrivate(Message message, String receiver)
     {
         for (ServerUserThread user : userThreads) {
             if (user.getUserName().equals(receiver)) {
