@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class ExitThread extends Thread
 {
+    /**
+     * Exit input thread
+     */
     public void run()
     {
         while(true) {

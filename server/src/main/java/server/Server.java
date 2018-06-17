@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import client.Message;
@@ -102,16 +100,6 @@ public class Server
             userThreads.remove(user);
             System.out.println("User " + userName + " has quitted.");
         }
-    }
-
-    /**
-     * @return string time on server
-     */
-    String getServerTime()
-    {
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        return dateFormat.format(date);
     }
 
     /**

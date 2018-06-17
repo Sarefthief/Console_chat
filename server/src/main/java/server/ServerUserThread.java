@@ -3,8 +3,6 @@ package server;
 import client.Message;
 import java.io.*;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -13,12 +11,9 @@ public class ServerUserThread extends Thread
     private String userName;
     private Socket user;
     private Server server;
-    private PrintWriter writer;
-    private BufferedReader reader;
     private ObjectInputStream ObjectIn;
     private ObjectOutputStream ObjectOut;
     private Message serverMessage;
-    private PrintStream ps;
 
     /**
      * Constructor with nickname initialization
@@ -31,10 +26,10 @@ public class ServerUserThread extends Thread
         this.server = server;
 
         InputStream input = user.getInputStream();
-        reader = new BufferedReader(new InputStreamReader(input,"UTF-8"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input,"UTF-8"));
         ObjectIn = new ObjectInputStream(user.getInputStream());
-        writer = new PrintWriter(new OutputStreamWriter(user.getOutputStream(),"UTF-8"),true);
-        ps = new PrintStream(System.out, true, "UTF-8");
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(user.getOutputStream(),"UTF-8"),true);
+        PrintStream ps = new PrintStream(System.out, true, "UTF-8");
 
         while(true){
             userName = reader.readLine();
@@ -66,7 +61,6 @@ public class ServerUserThread extends Thread
     {
         try {
             String[] words;
-            DateFormat dateFormat = new SimpleDateFormat("HH:mm");
             while(true){
                 try{
                     serverMessage = (Message) ObjectIn.readObject();
@@ -82,7 +76,7 @@ public class ServerUserThread extends Thread
                             serverMessage.setUsername(userName + "(Private)");
                             server.sendPrivate(serverMessage, words[1]);
                         } else {
-                            //writer.println("User with that nickname does not exist");
+                                ObjectOut.writeObject("User with that nickname does not exist");
                         }
                     } else {
                         server.broadcast(serverMessage, this);
