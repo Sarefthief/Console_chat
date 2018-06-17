@@ -76,7 +76,7 @@ public class ServerUserThread extends Thread
                             serverMessage.setUsername(userName + "(Private)");
                             server.sendPrivate(serverMessage, words[1]);
                         } else {
-                                ObjectOut.writeObject("User with that nickname does not exist");
+                            ObjectOut.writeObject(new Message ("Server", "This user does not exists.", new Date()));
                         }
                     } else {
                         server.broadcast(serverMessage, this);
