@@ -2,9 +2,6 @@ package client;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Scanner;
 
 public class ClientWriter extends Thread
